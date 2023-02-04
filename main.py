@@ -26,18 +26,29 @@ def drow_map():
     with open(map_file, "wb") as file:
         file.write(response.content)
 
+    screen.blit(pygame.image.load(map_file), (0, 0))
+    pygame.display.flip()
+
 
 pygame.init()
 screen = pygame.display.set_mode((600, 450))
 map_file = "map.png"
 drow_map()
-screen.blit(pygame.image.load(map_file), (0, 0))
-pygame.display.flip()
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_PAGEUP:
+                if Z < 23:
+                    Z += 1
+                    drow_map()
+            if event.key == pygame.K_PAGEDOWN:
+                if Z > 0:
+                    Z -= 1
+                    drow_map()
+
     # screen.fill((0, 0, 0))
     # pygame.display.flip()
 pygame.quit()
