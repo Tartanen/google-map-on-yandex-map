@@ -4,7 +4,7 @@ import sys
 import pygame
 import requests
 
-LON, LAT = "39.568664", "52.628096"
+LON, LAT = "70", "70"
 Z = 12
 api_server = "http://static-maps.yandex.ru/1.x/"
 
@@ -31,7 +31,8 @@ def drow_map():
 
 
 pygame.init()
-screen = pygame.display.set_mode((600, 450))
+size = (600, 450)
+screen = pygame.display.set_mode(size)
 map_file = "map.png"
 drow_map()
 running = True
@@ -48,9 +49,26 @@ while running:
                 if Z > 0:
                     Z -= 1
                     drow_map()
-
-    # screen.fill((0, 0, 0))
-    # pygame.display.flip()
+            if event.key == pygame.K_UP:
+                temp = float(LAT) + float(f'0.{size[-1] // 2}')
+                if temp < 80.0:
+                    LAT = str(temp)
+                    drow_map()
+            if event.key == pygame.K_DOWN:
+                temp = float(LAT) - float(f'0.{size[-1] * (24 - Z)}')
+                if temp > -80.0:
+                    LAT = str(temp)
+                    drow_map()
+            if event.key == pygame.K_LEFT:
+                temp = float(LON) - float(f'0.{size[0] * (24 - Z)}')
+                if temp > -180.0:
+                    LON = str(temp)
+                    drow_map()
+            if event.key == pygame.K_RIGHT:
+                temp = float(LON) + float(f'0.{size[0] * (24 - Z)}')
+                if temp < 180.0:
+                    LON = str(temp)
+                    drow_map()
 pygame.quit()
 
 os.remove(map_file)
